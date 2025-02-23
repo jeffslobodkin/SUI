@@ -124,7 +124,6 @@ module transcript::transcript {
         requester: address,
         intended_address: address
     }
-
 }
 
 
