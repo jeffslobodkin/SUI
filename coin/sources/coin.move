@@ -32,10 +32,6 @@ public fun burn(treasury_cap: &mut TreasuryCap<COIN>, coin: Coin<COIN>) {
     coin::burn(treasury_cap, coin);
 }
 
-public fun hello(){
-    
-}
-
 #[test_only]
 public fun test_init(ctx: &mut TxContext) {
     init(COIN {}, ctx);
