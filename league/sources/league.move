@@ -46,23 +46,7 @@ public fun create_league(_: &AdminRole, ctx: &mut TxContext, name: string::Strin
 		name,
 	};
 
-
 	transfer::public_transfer(this_league, tx_context::sender(ctx));
-
 }
 
-
-// public fun create_game(_: &AdminRole, ctx: &mut TxContext)
-// {
-// 	let this_game = Game {
-// 		id : object::new(ctx),
-// 		referee
-// 	}
-
-// }
-
-// public fun create_player(ctx: &mut TxContext)
-// {
-
-// }
 
