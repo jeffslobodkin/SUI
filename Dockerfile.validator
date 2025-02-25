@@ -1,0 +1,21 @@
+
+FROM rust:latest
+
+# Install dependencies
+RUN apt-get update && apt-get install -y curl git-all cmake gcc libssl-dev pkg-config libclang-dev libpq-dev build-essential 
+
+# Update rust
+RUN rustup update stable
+
+WORKDIR /sui
+
+# Install from Cargo
+RUN cargo install --locked --git https://github.com/MystenLabs/sui.git --branch testnet sui --features tracing
+
+
+# Expose ports
+EXPOSE 8080 9000
+
+# Run the Sui validator
+#CMD ["cargo", "run", "--release", "--bin", "sui-node"]
+CMD ["/bin/bash"]
