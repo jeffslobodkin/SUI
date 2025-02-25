@@ -3,18 +3,16 @@
 module league::league;
 
 use std::string;
-	use sui::object::{Self, UID};
-	use sui::transfer;
-	use sui::tx_context::{Self, TxContext};
-	use std::vector;
-
-// For Move coding conventions, see
-// https://docs.sui.io/concepts/sui-move-concepts/conventions
+use sui::object::{Self, UID};
+use sui::transfer;
+use sui::tx_context::{Self, TxContext};
+use std::vector;
+use std::ascii;
 
 public struct League has key, store{
 	id:UID,
 	players: vector<UID>,
-	name: string,
+	name: string::String,
 }
 
 public struct Player has key, store{
@@ -29,17 +27,18 @@ public struct Game has key, store{
 
 public struct AdminRole has key, store {
     id: UID,
-    leagues:vector<UID>
 }
 
 fun init(ctx: &mut TxContext) {
-    transfer::transfer(AdminRole {
-        id: object::new(ctx)
-    }, tx_context::sender(ctx))
+	let admin = AdminRole {
+		id: object::new(ctx),
+	};
+	create_league(&admin, ctx, string::from_ascii(ascii::string(b"League1")));
 
+    transfer::transfer(admin, tx_context::sender(ctx));
 }
 
-public fun entry create_league(_: &AdminRole, ctx: &mut TxContext, name: string): League
+public fun create_league(_: &AdminRole, ctx: &mut TxContext, name: string::String)
 {
 	let this_league = League {
 		id : object::new(ctx),
@@ -47,11 +46,13 @@ public fun entry create_league(_: &AdminRole, ctx: &mut TxContext, name: string)
 		name,
 	};
 
-	transfer::public_tranfer<League>(this_league, ctx::sender);
+
+	transfer::public_transfer(this_league, tx_context::sender(ctx));
 
 }
 
-// public fun entry create_game(_: &AdminRole, ctx: &mut TxContext)
+
+// public fun create_game(_: &AdminRole, ctx: &mut TxContext)
 // {
 // 	let this_game = Game {
 // 		id : object::new(ctx),
@@ -60,7 +61,7 @@ public fun entry create_league(_: &AdminRole, ctx: &mut TxContext, name: string)
 
 // }
 
-// public fun entry create_player(ctx: &mut TxContext)
+// public fun create_player(ctx: &mut TxContext)
 // {
 
 // }
