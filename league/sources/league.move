@@ -17,6 +17,7 @@ public struct League has key, store{
 
 public struct Player has key, store{
 	id:UID,
+	name: string::String,
 }
 
 public struct Game has key, store{
@@ -49,4 +50,11 @@ public fun create_league(_: &AdminRole, ctx: &mut TxContext, name: string::Strin
 	transfer::public_transfer(this_league, tx_context::sender(ctx));
 }
 
+public fun create_player(ctx: &mut TxContext, name: string::String) {
+	let player = Player {
+		id: object::new(ctx),
+		name,
+	};
+	transfer::public_transfer(player, tx_context::sender(ctx));
+}
 
