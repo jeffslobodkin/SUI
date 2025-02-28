@@ -1,8 +1,9 @@
-import { ConnectButton } from "@mysten/dapp-kit";
+import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
 import { Box, Container, Flex, Heading } from "@radix-ui/themes";
 import { WalletStatus } from "./WalletStatus";
-
+import { CreatePlayer } from "./CreatePlayer";
 function App() {
+  const currentAccount = useCurrentAccount();
   return (
     <>
       <Flex
@@ -30,6 +31,7 @@ function App() {
           style={{ background: "var(--gray-a2)", minHeight: 500 }}
         >
           <WalletStatus />
+          <CreatePlayer />        
         </Container>
       </Container>
     </>
