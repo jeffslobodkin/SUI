@@ -57,4 +57,12 @@ public fun create_player(ctx: &mut TxContext, name: string::String) {
 	};
 	transfer::public_transfer(player, tx_context::sender(ctx));
 }
+public fun make_work(ctx: &mut TxContext, number: u64)
+{
+	create_player(ctx, string::from_ascii(ascii::string(b"Player One")));
+}
 
+public fun make_work_now(ctx: &mut TxContext)
+{
+	create_player(ctx, string::from_ascii(ascii::string(b"Player One")));
+}
