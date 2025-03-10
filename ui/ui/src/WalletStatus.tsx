@@ -17,7 +17,6 @@ export function WalletStatus() {
       ) : (
         <Text>Wallet not connected</Text>
       )}
-      <OwnedObjects />
     </Container>
   );
 }
