@@ -3,11 +3,6 @@
 module league::league;
 
 use std::string;
-use sui::object::{Self, UID};
-use sui::transfer;
-use sui::tx_context::{Self, TxContext};
-use std::vector;
-use std::ascii;
 
 public struct League has key, store{
 	id:UID,
@@ -22,7 +17,7 @@ public struct Player has key, store{
 
 public struct Game has key, store{
 	id:UID,
-	referee:UID
+	referee:ID
 
 }
 
@@ -34,35 +29,25 @@ fun init(ctx: &mut TxContext) {
 	let admin = AdminRole {
 		id: object::new(ctx),
 	};
-	create_league(&admin, ctx, string::from_ascii(ascii::string(b"League1")));
-
+	transfer::public_transfer(
+		create_league(&admin, string::utf8(b"League1"), ctx)
+		, tx_context::sender(ctx));
     transfer::transfer(admin, tx_context::sender(ctx));
 }
 
-public fun create_league(_: &AdminRole, ctx: &mut TxContext, name: string::String)
+public fun create_league(_: &AdminRole, name: string::String, ctx: &mut TxContext): League
 {
-	let this_league = League {
+	 League {
 		id : object::new(ctx),
 		players: vector::empty<UID>(),
 		name,
-	};
+	}
 
-	transfer::public_transfer(this_league, tx_context::sender(ctx));
 }
 
-public fun create_player(ctx: &mut TxContext, name: string::String) {
-	let player = Player {
+public fun create_player(name: string::String, ctx: &mut TxContext): Player {
+	 Player {
 		id: object::new(ctx),
-		name,
-	};
-	transfer::public_transfer(player, tx_context::sender(ctx));
-}
-public fun make_work(ctx: &mut TxContext, number: u64)
-{
-	create_player(ctx, string::from_ascii(ascii::string(b"Player One")));
-}
-
-public fun make_work_now(ctx: &mut TxContext)
-{
-	create_player(ctx, string::from_ascii(ascii::string(b"Player One")));
+		name:name,
+	}
 }
